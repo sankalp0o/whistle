@@ -12,8 +12,17 @@ import React, {
   TouchableHighlight,
   ListView,
   TextInput,
+  AsyncStorage,
 } from 'react-native';
 
+
+var userId;
+
+
+
+
+
+//needed for using the form
 //var request = require('./node_modules/request');
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -28,11 +37,16 @@ var Person = t.struct({
 });
 var options = {};
 
+//API URLs
+var userApi = 'http://11.11.11.18:3000/api/users/';
+
+
+
 class whistle extends React.Component{
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'welcome'}}
+        initialRoute={{id: 'welcome'}} //splash
         renderScene={this.navigatorRenderScene} />
     );
   }
@@ -40,6 +54,8 @@ class whistle extends React.Component{
   navigatorRenderScene(route, navigator) {
     _navigator = navigator;
     switch (route.id) {
+      case 'splash':
+        return (<SplashScreen navigator={navigator} title="Welcome"/>);
       case 'welcome':
         return (<WelcomeScreen navigator={navigator} title="Welcome"/>);
       case 'signUp':
@@ -54,28 +70,63 @@ class whistle extends React.Component{
         return (<FriendProfile navigator={navigator} title="Friend" />);
       case 'modal':
         return (<ConfirmModal navigator={navigator} title="The modal" />);
-        
-      
-        
-
     }
+  }
+}
+
+
+class SplashScreen extends React.Component{
+  navFirst(){
+    this.props.navigator.push({
+        id: this.getStartRoute()
+    })
+    console.log("userId in navFirst", userId);
+
+  }
+
+  getStartRoute() {
+    console.log("userId in getStartRoute", userId);
+
+    if (!userId) {return 'welcome'}
+    else {return 'home'};
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem("userId")
+      .then((value) => {
+        userId = value;
+        console.log("User ID recieved", value);
+        this.navFirst();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .done();
+  }
+
+  render() {
+    return (
+      <View>
+        <Text>CODECAMP16</Text>        
+
+      </View>
+    );
   }
 }
 
 class WelcomeScreen extends React.Component{
   navSecond(){
     this.props.navigator.push({
-      id: 'signUp'
+      id: 'home' // 'signup'
     })
   }
   render() {
     return (
-      <View>
-        <ToolbarAndroid style={styles.tb}
-                        title={this.props.title}
-                        titleColor={'#FFFFFF'}/>
-        <TouchableHighlight style={styles.bottomButton} onPress={this.navSecond.bind(this)}>
-          <Text style={styles.bodyText}>SIGN UP</Text>
+      <View style={styles.welcomeScreen}>
+        <Text style={{color: 'white', marginTop: 180, fontSize: 30,}}>CODECAMP16</Text>
+        <Text>Gumakkad</Text>
+        <TouchableHighlight style={styles.welcomeButton} onPress={this.navSecond.bind(this)}>
+          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.bodyText}>GET INTRODUCED</Text></View>
         </TouchableHighlight>
       </View>
     );
@@ -89,15 +140,14 @@ class SignScreen extends React.Component{
       id: 'home'
     })
   };
-  onPress = () => {
 
+  onPress = () => {
     // call getValue() to get the values of the form
     var value = this.refs.form.getValue();
     if (value) { // if validation fails, value will be null
       console.log(value); // value here is an instance of Person
       console.log(value.full_name);
-      this.navThird();
-      fetch('http://11.11.11.18:3000/api/users/', {
+      fetch(userApi, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -106,19 +156,23 @@ class SignScreen extends React.Component{
           body: JSON.stringify({
             name: value.full_name,
             emailID: value.email,
-            phoneNumber: value.ten_digit_phone_number.toString(), //convert to string
+            phoneNumber: value.ten_digit_phone_number.toString(), //converted to string
             description: value.short_bio,
-            skills: [value.skills], //convert to array
-
+            skills: [value.skills], //converted to array
           })
       })
+      .then((response) =>  response.json())
+      .then((jsonData) => {
+        console.log(jsonData.id);
+        userId = jsonData.id;
+        this.navThird();
+      })
+      // will have to work on error handling, lookup .catch error and how promises work
       .catch((error) => {
-        console.warn(error);
+        console.warn(error);   
       });
     }
   }
-
-      
 
   render() {
     return (
@@ -128,18 +182,15 @@ class SignScreen extends React.Component{
           title={this.props.title}
           titleColor={'#FFFFFF'}
         />
-
-        <Form
-          ref="form"
-          type={Person}
-          options={options}
-        />
-
-        <TouchableHighlight style={styles.bottomButton} 
-//          onPress={this.navThird.bind(this)}
-          onPress={this.onPress}
-        >
-          <Text style={styles.bodyText}>SUBMIT</Text>
+        <View style={{margin: 20}}>
+          <Form
+            ref="form"
+            type={Person}
+            options={options}
+          />
+         </View> 
+        <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
+          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.bodyText, { color: 'white', }}>SUBMIT</Text></View>
         </TouchableHighlight>
       </View>
     );
@@ -148,11 +199,12 @@ class SignScreen extends React.Component{
 
 
 class HomeScreen extends React.Component{
-  navnotif(){
+/*  navnotif(){
     this.props.navigator.push({
       id: 'notification'
     })
   }
+*/
   onActionSelected= function(position){
     if (position === 0) {
       this.props.navigator.push({
@@ -175,6 +227,7 @@ class HomeScreen extends React.Component{
                         actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                         onActionSelected={this.onActionSelected.bind(this)}/>
           <Text style={styles.bodyText}>Welcome to codecamp</Text>
+          
       </View>
     );
   }
@@ -199,18 +252,30 @@ class NotificationScreen extends React.Component{
 
 
 class AccountScreen extends React.Component{
-  render() {
-    var userInfo="random value";
-    fetch('http://11.11.11.18:3000/api/users/')
-      .then(
-        function(response) {
-          userInfo = response;
-        }
-      )
-      
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userInfo: 'Loading ..',
+    };
+  }
+
+  componentDidMount() {
+    fetch(userApi)
+      .then((response) =>response.json())
+      .then((responseData) => {
+        console.log(responseData[0].name);
+       // userInfo: responseData[0].name;
+        this.setState({userInfo: responseData[0].name});
+      })
+
       .catch((error) => {
         console.warn(error);
     });
+  }
+
+  render() {
+    
     return (
       <View>
         <ToolbarAndroid style={styles.tb}
@@ -218,7 +283,7 @@ class AccountScreen extends React.Component{
                         titleColor={'#FFFFFF'}
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.bodyText}>{userInfo}</Text>
+          <Text style={styles.bodyText}>{this.state.userInfo}</Text>
       </View>
     );
   }
@@ -265,12 +330,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#16C340',
   },
   bodyText:{
-    fontSize: 40,
+    fontSize: 16,
+    color: '#16C340',
   },
   bottomButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#16C340',
+    borderRadius: 24,
+    width: 200,
+    height: 48,
+    alignSelf: 'center',
   },
   inputField: {
+    height: 48,
+  },
+  welcomeScreen: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#16C340',
+    flex: 1,
+  },
+  welcomeButton: {
+    marginTop: 200,
+    backgroundColor: 'white',
+    borderRadius: 24,
+    width: 200,
     height: 48,
   },
 });
