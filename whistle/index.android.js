@@ -67,7 +67,7 @@ class whistle extends React.Component{
       case 'account':
         return (<AccountScreen navigator={navigator} title="Your profile" />);
       case 'profile':
-        return (<FriendProfile navigator={navigator} title="Friend" />);
+        return (<FriendProfile navigator={navigator} title="Friend" friendId={route.friendId} />);
       case 'modal':
         return (<ConfirmModal navigator={navigator} title="The modal" />);
     }
@@ -242,6 +242,7 @@ class HomeScreen extends React.Component{
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
+    console.log("Inside render method", this);
 
     return (
       <View>
@@ -253,7 +254,7 @@ class HomeScreen extends React.Component{
         <Text style={styles.bodyText}>Welcome to codecamp</Text>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={this.renderUser}
+          renderRow={this.renderUser.bind(this)}
           style={styles.listView}
         />
       </View>
@@ -270,28 +271,31 @@ class HomeScreen extends React.Component{
     );
   }
 
+
+
   renderUser(userInfo) { //change this function to render a user 
+    console.log("Abhishek", this);
     return (  
-      <View style={styles.container}>
-        <Text>{userInfo.name}</Text>
-      </View>
-    );
-  }
-
-/*  oldrender() {
-    return (
       <View>
-        <ToolbarAndroid style={styles.tb}
-                        title={this.props.title}
-                        titleColor={'#FFFFFF'}
-                        actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
-                        onActionSelected={this.onActionSelected.bind(this)}/>
-          <Text style={styles.bodyText}>Welcome to codecamp</Text>
-
+        <TouchableHighlight 
+          onPress={ () => this.seeFriend(userInfo.id) }
+        >
+        <View>
+          <Text>{userInfo.name}</Text>
+          <Text>{userInfo.id}</Text>
+        </View>
+        </TouchableHighlight>
       </View>
     );
-  }*/
+  };
 
+seeFriend(id) {
+  this.props.navigator.push({
+    id: 'profile',
+    friendId: id,
+  })
+
+}
 
 };
 
@@ -361,9 +365,10 @@ class FriendProfile extends React.Component{
         <ToolbarAndroid style={styles.tb}
                         title={this.props.title}
                         titleColor={'#FFFFFF'}
-                        navIcon={require('./notif.png')}
+                        navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.bodyText}>This is a person's profile</Text>
+          <Text style={styles.bodyText}>{this.props.friendId}</Text>
+          
       </View>
     );
   }
