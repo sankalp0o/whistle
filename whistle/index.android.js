@@ -16,14 +16,12 @@ import React, {
 } from 'react-native';
 
 
-var userId;
+//~~~~~~~~~~~~~~~~~Global variables~~~~~~~~~~~~~~~~~~~~
+var userId; //used to store userid in shared preference
 
 
 
-
-
-//needed for using the form
-//var request = require('./node_modules/request');
+//~~~~~~~~~~~~~~~ Needed for using the form ~~~~~~~~~~~~
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 var Person = t.struct({
@@ -37,12 +35,16 @@ var Person = t.struct({
 });
 var options = {};
 
-//API URLs
-var userApi = 'http://11.11.11.14:3000/api/users/';
-//var getUserById = 'http://11.11.11.14:3000/api/users/';
 
 
-class whistle extends React.Component{
+//~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var userApi = 'http://11.11.11.12:3000/api/users/';
+
+
+
+
+class whistle extends React.Component{ //-------------------------------------------------------------------------------
+
   render() {
     return (
       <Navigator
@@ -75,7 +77,8 @@ class whistle extends React.Component{
 }
 
 
-class SplashScreen extends React.Component{
+class SplashScreen extends React.Component{ //------------------------------------------------------------------------------
+
   navFirst(){
     this.props.navigator.push({
         id: this.getStartRoute()
@@ -114,7 +117,8 @@ class SplashScreen extends React.Component{
   }
 }
 
-class WelcomeScreen extends React.Component{
+
+class WelcomeScreen extends React.Component{ //------------------------------------------------------------------------
   navSecond(){
     this.props.navigator.push({
       id: 'home' // 'signup'
@@ -126,7 +130,7 @@ class WelcomeScreen extends React.Component{
         <Text style={{color: 'white', marginTop: 180, fontSize: 30,}}>CODECAMP16</Text>
         <Text>Gumakkad</Text>
         <TouchableHighlight style={styles.welcomeButton} onPress={this.navSecond.bind(this)}>
-          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.bodyText}>GET INTRODUCED</Text></View>
+          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText}>GET INTRODUCED</Text></View>
         </TouchableHighlight>
       </View>
     );
@@ -134,7 +138,7 @@ class WelcomeScreen extends React.Component{
 }
 
 
-class SignScreen extends React.Component{
+class SignScreen extends React.Component{ //----------------------------------------------------------------------------
   navThird(){
     this.props.navigator.push({
       id: 'home'
@@ -190,7 +194,7 @@ class SignScreen extends React.Component{
           />
          </View> 
         <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
-          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.bodyText, { color: 'white', }}>SUBMIT</Text></View>
+          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>SUBMIT</Text></View>
         </TouchableHighlight>
       </View>
     );
@@ -198,7 +202,7 @@ class SignScreen extends React.Component{
 };
 
 
-class HomeScreen extends React.Component{
+class HomeScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
   onActionSelected = function(position){
     if (position === 0) {
@@ -247,11 +251,11 @@ class HomeScreen extends React.Component{
     return (
       <View>
         <ToolbarAndroid style={styles.tb}
-                          title={this.props.title}
-                          titleColor={'#FFFFFF'}
-                          actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
-                          onActionSelected={this.onActionSelected.bind(this)} />
-        <Text style={styles.bodyText}>Welcome to codecamp</Text>
+                        title={this.props.title}
+                        titleColor={'#FFFFFF'}
+                        actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
+                        onActionSelected={this.onActionSelected.bind(this)} />
+        <Text style={styles.bodyText}>Participants</Text>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderUser.bind(this)}
@@ -276,13 +280,11 @@ class HomeScreen extends React.Component{
   renderUser(userInfo) { //change this function to render a user 
     console.log("Abhishek", this);
     return (  
-      <View>
-        <TouchableHighlight 
-          onPress={ () => this.seeFriend(userInfo.id) }
-        >
+      <View style={styles.listElement}>
+        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>
         <View>
-          <Text>{userInfo.name}</Text>
-          <Text>{userInfo.id}</Text>
+          <Text style={{fontSize: 20, color: 'black',marginTop: 12,}}>{userInfo.name}</Text>
+          <Text style={{fontSize: 16, color: '#888888', marginTop: 4,}}>ID: {userInfo.id}</Text>
         </View>
         </TouchableHighlight>
       </View>
@@ -300,7 +302,8 @@ seeFriend(id) {
 };
 
 
-class NotificationScreen extends React.Component{
+class NotificationScreen extends React.Component{ //-----------------------------------------------------------------------------------
+
   render() {
     return (
       <View>
@@ -317,7 +320,7 @@ class NotificationScreen extends React.Component{
 };
 
 
-class AccountScreen extends React.Component{
+class AccountScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
   constructor(props) {
     super(props);
@@ -355,7 +358,8 @@ class AccountScreen extends React.Component{
 };
 
 
-class FriendProfile extends React.Component{
+class FriendProfile extends React.Component{ //-----------------------------------------------------------------------------------
+
   constructor(props) {
     super(props);
     this.state = {
@@ -413,26 +417,10 @@ class FriendProfile extends React.Component{
     );
   }
 
-
-
-  renderold() {
-
-    return (
-      <View>
-        <ToolbarAndroid style={styles.tb}
-                        title={this.props.title}
-                        titleColor={'#FFFFFF'}
-                        navIcon={require('./back.png')}
-                        onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.bodyText}>{this.props.friendId}</Text>
-
-      </View>
-    );
-  }
 };
 
 
-class ConfirmModal extends React.Component{
+class ConfirmModal extends React.Component{ //-----------------------------------------------------------------------------------
   render() {
     return (
       <View>
@@ -448,14 +436,19 @@ class ConfirmModal extends React.Component{
 };
 
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ //-------------------------------------------------------------------------------------------
   tb:{
     height: 56,
     backgroundColor: '#16C340',
   },
+  buttonText:{
+    fontSize: 16,
+    color: '#16C340',
+  },
   bodyText:{
     fontSize: 16,
     color: '#16C340',
+    margin: 20,
   },
   bottomButton: {
     backgroundColor: '#16C340',
@@ -488,11 +481,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   listView: {
-    paddingTop: 20,
+    padding: 20,
     backgroundColor: '#F5FCFF',
   },
+  listElement: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#DDDDDD',
+  },
 });
-
 
 
 AppRegistry.registerComponent('whistle', () => whistle);
