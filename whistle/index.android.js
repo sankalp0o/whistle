@@ -39,7 +39,7 @@ var options = {};
 
 //API URLs
 var userApi = 'http://11.11.11.14:3000/api/users/';
-
+//var getUserById = 'http://11.11.11.14:3000/api/users/';
 
 
 class whistle extends React.Component{
@@ -331,7 +331,6 @@ class AccountScreen extends React.Component{
       .then((response) =>response.json())
       .then((responseData) => {
         console.log(responseData[0].name);
-       // userInfo: responseData[0].name;
         this.setState({userInfo: responseData[0].name});
       })
 
@@ -357,8 +356,66 @@ class AccountScreen extends React.Component{
 
 
 class FriendProfile extends React.Component{
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      friendInfo: {
+        name: "loading",
+      },
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch(userApi+this.props.friendId)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          friendInfo: responseData,
+          loaded: true,
+        });
+      })
+      .done();
+  }
+
   render() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+    console.log("Inside render method", this);
+
+    return (
+      <View>
+        <ToolbarAndroid style={styles.tb}
+                        title={this.props.title}
+                        titleColor={'#FFFFFF'}
+                        navIcon={require('./back.png')}
+                        onIconClicked={this.props.navigator.pop}/>
+        <Text style={styles.bodyText}>This is a person</Text>
+        <Text>{this.state.friendInfo.name}</Text>
+        <Text>{this.props.friendId}</Text>
+        
+      </View>
+    );
+  }
+
+  renderLoadingView() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    );
+  }
+
+
+
+  renderold() {
 
     return (
       <View>
@@ -368,7 +425,7 @@ class FriendProfile extends React.Component{
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
           <Text style={styles.bodyText}>{this.props.friendId}</Text>
-          
+
       </View>
     );
   }
