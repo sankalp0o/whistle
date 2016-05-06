@@ -38,7 +38,7 @@ var Person = t.struct({
 var options = {};
 
 //API URLs
-var userApi = 'http://11.11.11.18:3000/api/users/';
+var userApi = 'http://11.11.11.14:3000/api/users/';
 
 
 
@@ -199,13 +199,8 @@ class SignScreen extends React.Component{
 
 
 class HomeScreen extends React.Component{
-/*  navnotif(){
-    this.props.navigator.push({
-      id: 'notification'
-    })
-  }
-*/
-  onActionSelected= function(position){
+
+  onActionSelected = function(position){
     if (position === 0) {
       this.props.navigator.push({
         id: 'notification'
@@ -217,8 +212,73 @@ class HomeScreen extends React.Component{
       })
     }
   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch(userApi)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(responseData), //change movies with something else
+          loaded: true,
+        });
+      })
+      .done();
+  }
 
   render() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+
+    return (
+      <View>
+        <ToolbarAndroid style={styles.tb}
+                          title={this.props.title}
+                          titleColor={'#FFFFFF'}
+                          actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
+                          onActionSelected={this.onActionSelected.bind(this)} />
+        <Text style={styles.bodyText}>Welcome to codecamp</Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderUser}
+          style={styles.listView}
+        />
+      </View>
+    );
+  }
+
+  renderLoadingView() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    );
+  }
+
+  renderUser(userInfo) { //change this function to render a user 
+    return (  
+      <View style={styles.container}>
+        <Text>{userInfo.name}</Text>
+      </View>
+    );
+  }
+
+/*  oldrender() {
     return (
       <View>
         <ToolbarAndroid style={styles.tb}
@@ -227,10 +287,12 @@ class HomeScreen extends React.Component{
                         actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                         onActionSelected={this.onActionSelected.bind(this)}/>
           <Text style={styles.bodyText}>Welcome to codecamp</Text>
-          
+
       </View>
     );
-  }
+  }*/
+
+
 };
 
 
@@ -355,6 +417,17 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     width: 200,
     height: 48,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  listView: {
+    paddingTop: 20,
+    backgroundColor: '#F5FCFF',
   },
 });
 
