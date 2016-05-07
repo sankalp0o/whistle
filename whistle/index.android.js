@@ -13,6 +13,7 @@ import React, {
   ListView,
   TextInput,
   AsyncStorage,
+  ScrollView,
 } from 'react-native';
 
 
@@ -38,7 +39,7 @@ var options = {};
 
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var userApi = 'http://11.11.11.12:3000/api/users/';
+var userApi = 'http://11.11.11.14:3000/api/users/';
 
 
 
@@ -249,18 +250,19 @@ class HomeScreen extends React.Component{ //------------------------------------
     console.log("Inside render method", this);
 
     return (
-      <View>
+
+      <View style={{ flex:1,}}>
         <ToolbarAndroid style={styles.tb}
                         title={this.props.title}
                         titleColor={'#FFFFFF'}
                         actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                         onActionSelected={this.onActionSelected.bind(this)} />
         <Text style={styles.bodyText}>Participants</Text>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderUser.bind(this)}
-          style={styles.listView}
-        />
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderUser.bind(this)}
+            style={styles.listView}
+          />
       </View>
     );
   }
@@ -478,11 +480,14 @@ const styles = StyleSheet.create({ //-------------------------------------------
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
   },
   listView: {
-    padding: 20,
-    backgroundColor: '#F5FCFF',
+//    flex: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: '#FFFFFF',
+//    height: 500,
   },
   listElement: {
     borderBottomWidth: 1,
