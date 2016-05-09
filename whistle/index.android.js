@@ -40,6 +40,7 @@ var options = {};
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var userApi = 'http://11.11.11.13:3000/api/users/';
+var selfApi = 'http://11.11.11.13:3000/api/users/?filter[where][id]=5730171169a2d621a5b2b88a';
 
 
 
@@ -123,7 +124,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 class WelcomeScreen extends React.Component{ //------------------------------------------------------------------------
   navSecond(){
     this.props.navigator.push({
-      id: 'signUp' // 'signUp'
+      id: 'account' // 'signUp'
     })
   }
   render() {
@@ -325,7 +326,7 @@ class NotificationScreen extends React.Component{ //----------------------------
 
 class AccountScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
-  constructor(props) {
+/*  constructor(props) {
     super(props);
     this.state = {
       userInfo: 'Loading ..',
@@ -333,7 +334,7 @@ class AccountScreen extends React.Component{ //---------------------------------
   }
 
   componentDidMount() {
-    fetch(userApi)
+    fetch(selfApi)
       .then((response) =>response.json())
       .then((responseData) => {
         console.log(responseData[0].name);
@@ -355,6 +356,68 @@ class AccountScreen extends React.Component{ //---------------------------------
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
           <Text style={styles.subTitle}>{this.state.userInfo}</Text>
+      </View>
+    );
+  }*/
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      friendInfo: {
+        name: "loading",
+      },
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch(selfApi)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          friendInfo: responseData[0],
+          loaded: true,
+        });
+      })
+      .done();
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+    console.log("Inside render method", this);
+
+    return (
+      <View>
+        <ToolbarAndroid style={styles.tb}
+                        title={this.props.title}
+                        titleColor={'#FFFFFF'}
+                        navIcon={require('./back.png')}
+                        onIconClicked={this.props.navigator.pop}/>
+        <Text style={styles.subheading}>NAME</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.name}</Text>
+        <Text style={styles.subheading}>EMAIL</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.emailId}</Text>
+        <Text style={styles.subheading}>PHONE NO.</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.phoneNumber}</Text>
+        <Text style={styles.subheading}>SHORT BIO</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.description}</Text>
+      </View>
+    );
+  }
+
+  renderLoadingView() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          Loading...
+        </Text>
       </View>
     );
   }
