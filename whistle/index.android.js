@@ -39,7 +39,7 @@ var options = {};
 
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var userApi = 'http://11.11.11.14:3000/api/users/';
+var userApi = 'http://11.11.11.13:3000/api/users/';
 
 
 
@@ -49,7 +49,7 @@ class whistle extends React.Component{ //---------------------------------------
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'welcome'}} //splash
+        initialRoute={{id: 'splash'}} //splash
         renderScene={this.navigatorRenderScene} />
     );
   }
@@ -110,9 +110,10 @@ class SplashScreen extends React.Component{ //----------------------------------
 
   render() {
     return (
-      <View>
-        <Text>CODECAMP16</Text>        
-
+      <View style={styles.container}>
+        <Text>
+          Loading...
+        </Text>
       </View>
     );
   }
@@ -122,7 +123,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 class WelcomeScreen extends React.Component{ //------------------------------------------------------------------------
   navSecond(){
     this.props.navigator.push({
-      id: 'home' // 'signup'
+      id: 'signUp' // 'signUp'
     })
   }
   render() {
@@ -160,7 +161,7 @@ class SignScreen extends React.Component{ //------------------------------------
           },
           body: JSON.stringify({
             name: value.full_name,
-            emailID: value.email,
+            emailId: value.email,
             phoneNumber: value.ten_digit_phone_number.toString(), //converted to string
             description: value.short_bio,
             skills: [value.skills], //converted to array
@@ -169,7 +170,7 @@ class SignScreen extends React.Component{ //------------------------------------
       .then((response) =>  response.json())
       .then((jsonData) => {
         console.log(jsonData.id);
-        userId = jsonData.id;
+        userId = jsonData.id; //set userID in AsyncStorage !!!!!!!!!!!!!!!!!!!!!!!!-------------------!!!!!!!!!!!!!!!!!!!
         this.navThird();
       })
       // will have to work on error handling, lookup .catch error and how promises work
@@ -257,7 +258,7 @@ class HomeScreen extends React.Component{ //------------------------------------
                         titleColor={'#FFFFFF'}
                         actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                         onActionSelected={this.onActionSelected.bind(this)} />
-        <Text style={styles.bodyText}>Participants</Text>
+        <Text style={styles.subTitle}>Participants</Text>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderUser.bind(this)}
@@ -285,8 +286,8 @@ class HomeScreen extends React.Component{ //------------------------------------
       <View style={styles.listElement}>
         <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>
         <View>
-          <Text style={{fontSize: 20, color: 'black',marginTop: 12,}}>{userInfo.name}</Text>
-          <Text style={{fontSize: 16, color: '#888888', marginTop: 4,}}>ID: {userInfo.id}</Text>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
+          <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.id}</Text>
         </View>
         </TouchableHighlight>
       </View>
@@ -315,7 +316,7 @@ class NotificationScreen extends React.Component{ //----------------------------
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
 
-          <Text style={styles.bodyText}>These are the requests that you have</Text>
+          <Text style={styles.subTitle}>These are the requests that you have</Text>
       </View>
     );
   }
@@ -353,7 +354,7 @@ class AccountScreen extends React.Component{ //---------------------------------
                         titleColor={'#FFFFFF'}
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.bodyText}>{this.state.userInfo}</Text>
+          <Text style={styles.subTitle}>{this.state.userInfo}</Text>
       </View>
     );
   }
@@ -401,10 +402,15 @@ class FriendProfile extends React.Component{ //---------------------------------
                         titleColor={'#FFFFFF'}
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
-        <Text style={styles.bodyText}>This is a person</Text>
-        <Text>{this.state.friendInfo.name}</Text>
-        <Text>{this.props.friendId}</Text>
-        
+        <Text style={styles.subheading}>NAME</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.name}</Text>
+        <Text style={styles.subheading}>EMAIL</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.emailId}</Text>
+        <Text style={styles.subheading}>PHONE NO.</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.phoneNumber}</Text>
+        <Text style={styles.subheading}>SHORT BIO</Text>
+        <Text style={styles.bodyText}>{this.state.friendInfo.description}</Text>
+        {/* <Text>{this.props.friendId}</Text> */}
       </View>
     );
   }
@@ -431,7 +437,7 @@ class ConfirmModal extends React.Component{ //----------------------------------
                         titleColor={'#FFFFFF'}
                         navIcon={require('./notif.png')}
                         onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.bodyText}>Welcome to codecamp</Text>
+          <Text style={styles.subTitle}>Welcome to codecamp</Text>
       </View>
     );
   }
@@ -447,7 +453,7 @@ const styles = StyleSheet.create({ //-------------------------------------------
     fontSize: 16,
     color: '#16C340',
   },
-  bodyText:{
+  subTitle:{
     fontSize: 16,
     color: '#16C340',
     margin: 20,
@@ -492,6 +498,22 @@ const styles = StyleSheet.create({ //-------------------------------------------
   listElement: {
     borderBottomWidth: 1,
     borderBottomColor: '#DDDDDD',
+  },
+  subheading:{
+    fontSize: 16,
+    color: '#16C340',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  bodyText:{
+    fontSize: 20,
+    color: '#333333',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+    marginBottom: 30,
   },
 });
 
