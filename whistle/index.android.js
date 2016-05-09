@@ -39,9 +39,9 @@ var options = {};
 
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var userApi = 'http://11.11.11.13:3000/api/users/';
-var selfApi = 'http://11.11.11.13:3000/api/users/?filter[where][id]=5730171169a2d621a5b2b88a';
-
+var userApi = 'http://11.11.11.21:3000/api/users/';
+var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]=5730171169a2d621a5b2b88a';
+var userMappingApi = 'http://11.11.11.21:3000/api/userMappings/';
 
 
 
@@ -124,7 +124,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 class WelcomeScreen extends React.Component{ //------------------------------------------------------------------------
   navSecond(){
     this.props.navigator.push({
-      id: 'account' // 'signUp'
+      id: 'home' // 'signUp'
     })
   }
   render() {
@@ -281,7 +281,7 @@ class HomeScreen extends React.Component{ //------------------------------------
 
 
 
-  renderUser(userInfo) { //change this function to render a user 
+  renderUser(userInfo) {
     console.log("Abhishek", this);
     return (  
       <View style={styles.listElement}>
@@ -326,45 +326,10 @@ class NotificationScreen extends React.Component{ //----------------------------
 
 class AccountScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
-/*  constructor(props) {
-    super(props);
-    this.state = {
-      userInfo: 'Loading ..',
-    };
-  }
-
-  componentDidMount() {
-    fetch(selfApi)
-      .then((response) =>response.json())
-      .then((responseData) => {
-        console.log(responseData[0].name);
-        this.setState({userInfo: responseData[0].name});
-      })
-
-      .catch((error) => {
-        console.warn(error);
-    });
-  }
-
-  render() {
-    
-    return (
-      <View>
-        <ToolbarAndroid style={styles.tb}
-                        title={this.props.title}
-                        titleColor={'#FFFFFF'}
-                        navIcon={require('./back.png')}
-                        onIconClicked={this.props.navigator.pop}/>
-          <Text style={styles.subTitle}>{this.state.userInfo}</Text>
-      </View>
-    );
-  }*/
-
-
   constructor(props) {
     super(props);
     this.state = {
-      friendInfo: {
+      selfInfo: {
         name: "loading",
       },
       loaded: false,
@@ -380,7 +345,7 @@ class AccountScreen extends React.Component{ //---------------------------------
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          friendInfo: responseData[0],
+          selfInfo: responseData[0],
           loaded: true,
         });
       })
@@ -401,13 +366,13 @@ class AccountScreen extends React.Component{ //---------------------------------
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
         <Text style={styles.subheading}>NAME</Text>
-        <Text style={styles.bodyText}>{this.state.friendInfo.name}</Text>
+        <Text style={styles.bodyText}>{this.state.selfInfo.name}</Text>
         <Text style={styles.subheading}>EMAIL</Text>
-        <Text style={styles.bodyText}>{this.state.friendInfo.emailId}</Text>
+        <Text style={styles.bodyText}>{this.state.selfInfo.emailId}</Text>
         <Text style={styles.subheading}>PHONE NO.</Text>
-        <Text style={styles.bodyText}>{this.state.friendInfo.phoneNumber}</Text>
+        <Text style={styles.bodyText}>{this.state.selfInfo.phoneNumber}</Text>
         <Text style={styles.subheading}>SHORT BIO</Text>
-        <Text style={styles.bodyText}>{this.state.friendInfo.description}</Text>
+        <Text style={styles.bodyText}>{this.state.selfInfo.description}</Text>
       </View>
     );
   }
@@ -433,6 +398,7 @@ class FriendProfile extends React.Component{ //---------------------------------
         name: "loading",
       },
       loaded: false,
+      requestSent:false,
     };
   }
 
@@ -456,7 +422,19 @@ class FriendProfile extends React.Component{ //---------------------------------
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
+
     console.log("Inside render method", this);
+
+    if (this.state.requestSent) {
+      friendButton =  <View style={styles.inactiveBottomButton}>
+                        <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>REQUEST SENT</Text></View>
+                      </View>;
+    }
+    else {
+      friendButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
+                        <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>ADD AS FRIEND</Text></View>
+                      </TouchableHighlight>;
+    }
 
     return (
       <View>
@@ -473,11 +451,35 @@ class FriendProfile extends React.Component{ //---------------------------------
         <Text style={styles.bodyText}>{this.state.friendInfo.phoneNumber}</Text>
         <Text style={styles.subheading}>SHORT BIO</Text>
         <Text style={styles.bodyText}>{this.state.friendInfo.description}</Text>
-        {/* <Text>{this.props.friendId}</Text> */}
+        {friendButton}
+        
       </View>
     );
   }
 
+  onPress = () => {
+    var value = {
+        "sender": "5730171169a2d621a5b2b88a", //will need to change this !!! - - -   - -  
+        "receiver": this.state.friendInfo.id,
+        "status": "initiated"};
+    fetch(userMappingApi, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(value)
+    })
+      .then((response) =>  response.json())
+      .then((jsonData) => {
+
+        this.setState({requestSent: true,})
+      })
+      .catch((error) => {
+        console.warn(error);   
+      });
+  }
+    
   renderLoadingView() {
     return (
       <View style={styles.container}>
@@ -527,6 +529,13 @@ const styles = StyleSheet.create({ //-------------------------------------------
     width: 200,
     height: 48,
     alignSelf: 'center',
+  },
+  inactiveBottomButton: {
+    backgroundColor: '#bbbbbb',
+    borderRadius: 24,
+    width: 200,
+    height: 48,
+    alignSelf: 'center',  
   },
   inputField: {
     height: 48,
