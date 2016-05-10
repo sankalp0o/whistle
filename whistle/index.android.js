@@ -17,8 +17,9 @@ import React, {
 } from 'react-native';
 
 
-//~~~~~~~~~~~~~~~~~Global variables~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~Local Storage~~~~~~~~~~~~~~~~~~~~
 var userId; //used to store userid in shared preference
+var store = require('react-native-simple-store');
 
 
 
@@ -40,9 +41,9 @@ var options = {};
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var userApi = 'http://11.11.11.21:3000/api/users/';
-var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]=5730171169a2d621a5b2b88a';
+var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]='; //5730171169a2d621a5b2b88a
 var userMappingApi = 'http://11.11.11.21:3000/api/userMappings/';
-
+console.log(userId);
 
 
 class whistle extends React.Component{ //-------------------------------------------------------------------------------
@@ -97,7 +98,7 @@ class SplashScreen extends React.Component{ //----------------------------------
   }
 
   componentDidMount() {
-    AsyncStorage.getItem("userId")
+    AsyncStorage.getItem("storedUserId")
       .then((value) => {
         userId = value;
         console.log("User ID recieved", value);
@@ -124,7 +125,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 class WelcomeScreen extends React.Component{ //------------------------------------------------------------------------
   navSecond(){
     this.props.navigator.push({
-      id: 'home' // 'signUp'
+      id: 'signUp' // 'signUp'
     })
   }
   render() {
@@ -171,7 +172,10 @@ class SignScreen extends React.Component{ //------------------------------------
       .then((response) =>  response.json())
       .then((jsonData) => {
         console.log(jsonData.id);
-        userId = jsonData.id; //set userID in AsyncStorage !!!!!!!!!!!!!!!!!!!!!!!!-------------------!!!!!!!!!!!!!!!!!!!
+        AsyncStorage.setItem('storedUserId', jsonData.id); //set userID in AsyncStorage !!!!!!!!!!!!!!!!!!!!!!!!-------------------!!!!!!!!!!!!!!!!!!!
+//        this.navThird();
+      })
+      .then(() => {
         this.navThird();
       })
       // will have to work on error handling, lookup .catch error and how promises work
@@ -341,7 +345,7 @@ class AccountScreen extends React.Component{ //---------------------------------
   }
 
   fetchData() {
-    fetch(selfApi)
+    fetch(selfApi+userId)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -459,16 +463,17 @@ class FriendProfile extends React.Component{ //---------------------------------
 
   onPress = () => {
     var value = {
-        "sender": "5730171169a2d621a5b2b88a", //will need to change this !!! - - -   - -  
-        "receiver": this.state.friendInfo.id,
-        "status": "initiated"};
+      "sender": userId, //will need to change this !!! - - -   - -  
+      "receiver": this.state.friendInfo.id,
+      "status": "initiated"
+    };
     fetch(userMappingApi, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(value)
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(value)
     })
       .then((response) =>  response.json())
       .then((jsonData) => {
