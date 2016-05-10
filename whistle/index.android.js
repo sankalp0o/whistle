@@ -95,7 +95,7 @@ class SplashScreen extends React.Component{ //----------------------------------
     console.log("userId in getStartRoute", userId);
 
     if (!userId) {return 'welcome'}
-    else {return 'home'};
+    else {return 'notification'}; //home
   }
 
   componentDidMount() {
@@ -340,8 +340,28 @@ class NotificationScreen extends React.Component{ //----------------------------
     fetch(selfReqApi+userId)
       .then((response) => response.json())
       .then((responseData) => {
+        console.log("initial responseData",responseData);
+        responseData.forEach((currentValue) => {
+          console.log("currentValue",currentValue);
+          console.log("Sender: ", currentValue.sender);
+          fetch(selfApi+currentValue.sender)
+            .then((user) => {
+              console.log("user in json", user);
+              return user.json();
+            })
+            .then((userJson) => {
+              console.log("userJson name", userJson[0].name);
+              currentValue.senderName = userJson[0].name;
+              console.log("sender name", currentValue.senderName);
+            })        
+        })
+        console.log("final response", responseData);
+        return responseData;
+      })
+      .then((value) => {
+        console.log("value", value);
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData),
+          dataSource: this.state.dataSource.cloneWithRows(value),
           loaded: true,
         });
       })
@@ -390,7 +410,7 @@ class NotificationScreen extends React.Component{ //----------------------------
       <View style={styles.listElement}>
 {/*        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>*/}
         <View>
-          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.sender}</Text>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.senderName}</Text>
           <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.sender}</Text>
         </View>
 {/*        </TouchableHighlight>*/}

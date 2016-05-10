@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "async-q": "^0.3.1",
     "react": "^0.14.8",
     "react-native": "^0.23.1",
     "react-native-material-design": "^0.3.3",
