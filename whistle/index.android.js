@@ -43,6 +43,7 @@ var options = {};
 var userApi = 'http://11.11.11.21:3000/api/users/';
 var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]='; //5730171169a2d621a5b2b88a
 var userMappingApi = 'http://11.11.11.21:3000/api/userMappings/';
+var selfReqApi = 'http://11.11.11.21:3000/api/userMappings/?filter[where][receiver]='
 console.log(userId);
 
 
@@ -242,7 +243,7 @@ class HomeScreen extends React.Component{ //------------------------------------
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData), //change movies with something else
+          dataSource: this.state.dataSource.cloneWithRows(responseData),
           loaded: true,
         });
       })
@@ -299,31 +300,110 @@ class HomeScreen extends React.Component{ //------------------------------------
     );
   };
 
-seeFriend(id) {
-  this.props.navigator.push({
-    id: 'profile',
-    friendId: id,
-  })
+  seeFriend(id) {
+    this.props.navigator.push({
+      id: 'profile',
+      friendId: id,
+    })
 
-}
+  }
 
 };
 
 
 class NotificationScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
-  render() {
+  oldRender() {
     return (
       <View>
+        
+
+          <Text style={styles.subTitle}>These are the requests that you have</Text>
+      </View>
+    );
+  }
+    constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch(selfReqApi+userId)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(responseData),
+          loaded: true,
+        });
+      })
+      .done();
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+    console.log("Inside render method", this);
+
+    return (
+
+      <View style={{ flex:1,}}>
         <ToolbarAndroid style={styles.tb}
                         title={this.props.title}
                         titleColor={'#FFFFFF'}
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
-
-          <Text style={styles.subTitle}>These are the requests that you have</Text>
+        <Text style={styles.subTitle}>Requests</Text>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderUser.bind(this)}
+            style={styles.listView}
+          />
       </View>
     );
+  }
+
+  renderLoadingView() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    );
+  }
+
+
+
+  renderUser(userInfo) {
+    console.log("Abhishek", this);
+    return (  
+      <View style={styles.listElement}>
+{/*        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>*/}
+        <View>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.sender}</Text>
+          <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.sender}</Text>
+        </View>
+{/*        </TouchableHighlight>*/}
+      </View>
+    );
+  };
+
+  seeFriend(id) {
+    this.props.navigator.push({
+      id: 'profile',
+      friendId: id,
+    })
+
   }
 };
 
