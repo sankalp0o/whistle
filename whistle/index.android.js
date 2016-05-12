@@ -38,12 +38,11 @@ var Person = t.struct({
 var options = {};
 
 
-
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var userApi = 'http://11.11.11.21:3000/api/users/';
-var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]='; //5730171169a2d621a5b2b88a
-var userMappingApi = 'http://11.11.11.21:3000/api/userMappings/';
-var selfReqApi = 'http://11.11.11.21:3000/api/userMappings/?filter[where][receiver]='
+var userApi = 'http://11.11.11.13:3000/api/users/';
+var selfApi = 'http://11.11.11.13:3000/api/users/?filter[where][id]='; //5730171169a2d621a5b2b88a
+var userMappingApi = 'http://11.11.11.13:3000/api/userMappings/';
+var selfReqApi = 'http://11.11.11.13:3000/api/userMappings/?filter[where][receiver]='
 console.log(userId);
 
 
@@ -338,10 +337,20 @@ class NotificationScreen extends React.Component{ //----------------------------
 
   fetchData() {
     fetch(selfReqApi+userId)
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log("initial responseData",responseData);
-        responseData.forEach((currentValue) => {
+    .then((response) => response.json())
+    /*.then((responseData) => async.map(responseData, function(item, index, arr){
+      console.log("inside async-map", responseData);
+      fetch(selfApi+item.sender)  
+      .then((user) => user.json())
+      .then((userJson) => userJson.map((currentValue) => {
+        console.log("inside map", userJson[0].name);
+        currentValue.senderName = userJson[0].name;
+      }))
+    }))*/
+      
+//        console.log("initial responseData",responseData);
+        
+       /* responseData.forEach((currentValue) => {
           console.log("currentValue",currentValue);
           console.log("Sender: ", currentValue.sender);
           fetch(selfApi+currentValue.sender)
@@ -353,11 +362,34 @@ class NotificationScreen extends React.Component{ //----------------------------
               console.log("userJson name", userJson[0].name);
               currentValue.senderName = userJson[0].name;
               console.log("sender name", currentValue.senderName);
-            })        
-        })
-        console.log("final response", responseData);
-        return responseData;
-      })
+            })
+        });*/
+/*        var result = responseData.map(function(currentValue) {
+          fetch(selfApi+currentValue.sender)
+            .then((user) => {
+              console.log("user in json", user);
+              return user.json();
+            })
+            .then((userJson) => {
+              console.log("userJson name", userJson[0].name);
+              currentValue.senderName = userJson[0].name;
+              console.log("sender name", currentValue.senderName);
+            })
+        });*/
+
+/*        return (responseData.map(function(currentValue) {
+          fetch(selfApi+currentValue.sender)
+            .then((user) => {
+              console.log("user in json", user);
+              return user.json();
+            })
+            .then((userJson) => {
+              console.log("userJson name", userJson[0].name);
+              currentValue.senderName = userJson[0].name;
+              console.log("sender name", currentValue.senderName);
+            })
+        }));*/
+
       .then((value) => {
         console.log("value", value);
         this.setState({
@@ -410,7 +442,7 @@ class NotificationScreen extends React.Component{ //----------------------------
       <View style={styles.listElement}>
 {/*        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>*/}
         <View>
-          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.senderName}</Text>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.sender}</Text>
           <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.sender}</Text>
         </View>
 {/*        </TouchableHighlight>*/}
