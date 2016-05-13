@@ -39,11 +39,16 @@ var options = {};
 
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-var userApi = 'http://11.11.11.13:3000/api/users/';
-var selfApi = 'http://11.11.11.13:3000/api/users/?filter[where][id]='; //5730171169a2d621a5b2b88a
-var userMappingApi = 'http://11.11.11.13:3000/api/userMappings/';
-var selfReqApi = 'http://11.11.11.13:3000/api/userMappings/?filter[where][receiver]='
+//var userApi = 'http://11.11.11.38:3000/api/users/';
+//var selfApi = 'http://11.11.11.38:3000/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
+//var userMappingApi = 'http://11.11.11.38:3000/api/userMappings/';
+//var selfReqApi = 'http://11.11.11.38:3000/api/userMappings/?filter[where][receiver]='
 console.log(userId);
+
+var userApi = 'https://serene-basin-88933.herokuapp.com/api/users/';
+var selfApi = 'https://serene-basin-88933.herokuapp.com/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
+var userMappingApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/';
+var selfReqApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/?filter[where][receiver]='
 
 
 class whistle extends React.Component{ //-------------------------------------------------------------------------------
@@ -94,7 +99,7 @@ class SplashScreen extends React.Component{ //----------------------------------
     console.log("userId in getStartRoute", userId);
 
     if (!userId) {return 'welcome'}
-    else {return 'notification'}; //home
+    else {return 'welcome'}; //home
   }
 
   componentDidMount() {
@@ -172,13 +177,12 @@ class SignScreen extends React.Component{ //------------------------------------
       .then((response) =>  response.json())
       .then((jsonData) => {
         console.log(jsonData.id);
-        AsyncStorage.setItem('storedUserId', jsonData.id); //set userID in AsyncStorage !!!!!!!!!!!!!!!!!!!!!!!!-------------------!!!!!!!!!!!!!!!!!!!
-//        this.navThird();
+        AsyncStorage.setItem('storedUserId', jsonData.id); //sets userID in AsyncStorage
+        userId = jsonData.id; // sets the current userId for use in rest of the pages
       })
       .then(() => {
         this.navThird();
       })
-      // will have to work on error handling, lookup .catch error and how promises work
       .catch((error) => {
         console.warn(error);   
       });
