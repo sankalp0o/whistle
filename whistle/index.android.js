@@ -148,11 +148,21 @@ class WelcomeScreen extends React.Component{ //---------------------------------
 
 
 class SignScreen extends React.Component{ //----------------------------------------------------------------------------
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      requestSent:false,
+    };
+  }
+
   navThird(){
     this.props.navigator.push({
       id: 'home'
     })
   };
+
 
   onPress = () => {
     // call getValue() to get the values of the form
@@ -160,6 +170,9 @@ class SignScreen extends React.Component{ //------------------------------------
     if (value) { // if validation fails, value will be null
       console.log(value); // value here is an instance of Person
       console.log(value.full_name);
+
+      this.setState({requestSent: true,}) //changes the button to inactive
+
       fetch(userApi, {
           method: 'POST',
           headers: {
@@ -190,6 +203,18 @@ class SignScreen extends React.Component{ //------------------------------------
   }
 
   render() {
+
+    if (this.state.requestSent) {
+      submitButton =  <View style={styles.inactiveBottomButton}>
+                        <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>SUBMITTING</Text></View>
+                      </View>;
+    }
+    else {
+      submitButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
+                        <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>SUBMIT</Text></View>
+                      </TouchableHighlight>;
+    }
+
     return (
       <View>
         <ToolbarAndroid 
@@ -204,9 +229,8 @@ class SignScreen extends React.Component{ //------------------------------------
             options={options}
           />
          </View> 
-        <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
-          <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>SUBMIT</Text></View>
-        </TouchableHighlight>
+         {submitButton}
+        
       </View>
     );
   }
