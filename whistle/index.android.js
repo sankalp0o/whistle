@@ -56,7 +56,7 @@ class whistle extends React.Component{ //---------------------------------------
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'splash'}} //splash
+        initialRoute={{id: 'home'}} //splash
         renderScene={this.navigatorRenderScene} />
     );
   }
@@ -138,7 +138,7 @@ class WelcomeScreen extends React.Component{ //---------------------------------
       <View style={styles.welcomeScreen}>
         <Text style={{color: 'white', marginTop: 180, fontSize: 30,}}>CODECAMP16</Text>
         <Text>Gumakkad</Text>
-        <TouchableHighlight style={styles.welcomeButton} onPress={this.navSecond.bind(this)}>
+        <TouchableHighlight style={styles.welcomeButton} onPress={this.navSecond.bind(this)} underlayColor={'#dddddd'}>
           <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText}>GET INTRODUCED</Text></View>
         </TouchableHighlight>
       </View>
@@ -210,7 +210,7 @@ class SignScreen extends React.Component{ //------------------------------------
                       </View>;
     }
     else {
-      submitButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
+      submitButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress} underlayColor={'#0C862A'}>
                         <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>SUBMIT</Text></View>
                       </TouchableHighlight>;
     }
@@ -291,7 +291,7 @@ class HomeScreen extends React.Component{ //------------------------------------
                         titleColor={'#FFFFFF'}
                         actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                         onActionSelected={this.onActionSelected.bind(this)} />
-        <Text style={styles.subTitle}>Participants</Text>
+        <Text style={styles.subTitle}>PARTICIPANTS</Text>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderUser.bind(this)}
@@ -305,7 +305,7 @@ class HomeScreen extends React.Component{ //------------------------------------
     return (
       <View style={styles.container}>
         <Text>
-          Loading...
+          Fetching data from our slow servers on free plan...
         </Text>
       </View>
     );
@@ -317,7 +317,7 @@ class HomeScreen extends React.Component{ //------------------------------------
     console.log("Abhishek", this);
     return (  
       <View style={styles.listElement}>
-        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>
+        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) } underlayColor={'#dddddd'}>
         <View>
           <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
           <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.id}</Text>
@@ -595,7 +595,7 @@ class FriendProfile extends React.Component{ //---------------------------------
                       </View>;
     }
     else {
-      friendButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress}>
+      friendButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress} underlayColor={'#0C862A'}>
                         <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>ADD AS FRIEND</Text></View>
                       </TouchableHighlight>;
     }
@@ -694,6 +694,8 @@ const styles = StyleSheet.create({ //-------------------------------------------
     width: 200,
     height: 48,
     alignSelf: 'center',
+    marginTop: 20,
+
   },
   inactiveBottomButton: {
     backgroundColor: '#bbbbbb',
@@ -741,7 +743,7 @@ const styles = StyleSheet.create({ //-------------------------------------------
     color: '#16C340',
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 10,
+    marginTop: 30,
     marginBottom: 10,
   },
   bodyText:{
@@ -750,7 +752,7 @@ const styles = StyleSheet.create({ //-------------------------------------------
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 10,
   },
 });
 
