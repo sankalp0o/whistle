@@ -42,13 +42,14 @@ var options = {};
 //var userApi = 'http://11.11.11.38:3000/api/users/';
 //var selfApi = 'http://11.11.11.38:3000/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
 //var userMappingApi = 'http://11.11.11.38:3000/api/userMappings/';
-//var selfReqApi = 'http://11.11.11.38:3000/api/userMappings/?filter[where][receiver]='
+//var selfReqApi = 'http://11.11.11.38:3000/api/userMappings/?filter[where][receiver]=';
+var notifApi = 'http://11.11.11.11:3000/api/userMappings/getNotification';
 console.log(userId);
 
 var userApi = 'https://serene-basin-88933.herokuapp.com/api/users/';
 var selfApi = 'https://serene-basin-88933.herokuapp.com/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
 var userMappingApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/';
-var selfReqApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/?filter[where][receiver]='
+var selfReqApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/?filter[where][receiver]=';
 
 
 class whistle extends React.Component{ //-------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ class whistle extends React.Component{ //---------------------------------------
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'home'}} //splash
+        initialRoute={{id: 'splash'}} //splash
         renderScene={this.navigatorRenderScene} />
     );
   }
@@ -99,7 +100,7 @@ class SplashScreen extends React.Component{ //----------------------------------
     console.log("userId in getStartRoute", userId);
 
     if (!userId) {return 'welcome'}
-    else {return 'welcome'}; //home
+    else {return 'home'}; //home
   }
 
   componentDidMount() {
@@ -296,6 +297,7 @@ class HomeScreen extends React.Component{ //------------------------------------
             dataSource={this.state.dataSource}
             renderRow={this.renderUser.bind(this)}
             style={styles.listView}
+            pageSize={10}
           />
       </View>
     );
@@ -319,8 +321,8 @@ class HomeScreen extends React.Component{ //------------------------------------
       <View style={styles.listElement}>
         <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) } underlayColor={'#dddddd'}>
         <View>
-          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
-          <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.id}</Text>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12, marginLeft:20,}}>{userInfo.name}</Text>
+          <Text style={{fontSize: 16, color: '#888888', marginLeft:20,}}>{userInfo.description}</Text>
         </View>
         </TouchableHighlight>
       </View>
@@ -364,68 +366,21 @@ class NotificationScreen extends React.Component{ //----------------------------
   }
 
   fetchData() {
-    fetch(selfReqApi+userId)
+    fetch(notifApi, {
+      method: 'GET',
+      headers: {
+        'userId': userId,
+      },
+    })
     .then((response) => response.json())
-    /*.then((responseData) => async.map(responseData, function(item, index, arr){
-      console.log("inside async-map", responseData);
-      fetch(selfApi+item.sender)  
-      .then((user) => user.json())
-      .then((userJson) => userJson.map((currentValue) => {
-        console.log("inside map", userJson[0].name);
-        currentValue.senderName = userJson[0].name;
-      }))
-    }))*/
-      
-//        console.log("initial responseData",responseData);
-        
-       /* responseData.forEach((currentValue) => {
-          console.log("currentValue",currentValue);
-          console.log("Sender: ", currentValue.sender);
-          fetch(selfApi+currentValue.sender)
-            .then((user) => {
-              console.log("user in json", user);
-              return user.json();
-            })
-            .then((userJson) => {
-              console.log("userJson name", userJson[0].name);
-              currentValue.senderName = userJson[0].name;
-              console.log("sender name", currentValue.senderName);
-            })
-        });*/
-/*        var result = responseData.map(function(currentValue) {
-          fetch(selfApi+currentValue.sender)
-            .then((user) => {
-              console.log("user in json", user);
-              return user.json();
-            })
-            .then((userJson) => {
-              console.log("userJson name", userJson[0].name);
-              currentValue.senderName = userJson[0].name;
-              console.log("sender name", currentValue.senderName);
-            })
-        });*/
-
-/*        return (responseData.map(function(currentValue) {
-          fetch(selfApi+currentValue.sender)
-            .then((user) => {
-              console.log("user in json", user);
-              return user.json();
-            })
-            .then((userJson) => {
-              console.log("userJson name", userJson[0].name);
-              currentValue.senderName = userJson[0].name;
-              console.log("sender name", currentValue.senderName);
-            })
-        }));*/
-
-      .then((value) => {
-        console.log("value", value);
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(value),
-          loaded: true,
-        });
-      })
-      .done();
+    .then((value) => {
+      console.log("value", value);
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(value.data),
+        loaded: true,
+      });
+    })
+    .done();
   }
 
   render() {
@@ -470,8 +425,8 @@ class NotificationScreen extends React.Component{ //----------------------------
       <View style={styles.listElement}>
 {/*        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>*/}
         <View>
-          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.sender}</Text>
-          <Text style={{fontSize: 16, color: '#888888',}}>ID: {userInfo.sender}</Text>
+          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
+          <Text style={{fontSize: 16, color: '#888888',}}>{userInfo.description}</Text>
         </View>
 {/*        </TouchableHighlight>*/}
       </View>
@@ -702,7 +657,8 @@ const styles = StyleSheet.create({ //-------------------------------------------
     borderRadius: 24,
     width: 200,
     height: 48,
-    alignSelf: 'center',  
+    alignSelf: 'center',
+    marginTop: 20,
   },
   inputField: {
     height: 48,
@@ -729,8 +685,8 @@ const styles = StyleSheet.create({ //-------------------------------------------
   },
   listView: {
 //    flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
+//    paddingLeft: 20,
+//    paddingRight: 20,
     backgroundColor: '#FFFFFF',
 //    height: 500,
   },
