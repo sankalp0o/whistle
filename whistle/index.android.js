@@ -252,6 +252,7 @@ class HomeScreen extends React.Component{ //------------------------------------
       })
     }
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -282,7 +283,6 @@ class HomeScreen extends React.Component{ //------------------------------------
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
-    console.log("Inside render method", this);
 
     return (
 
@@ -297,7 +297,8 @@ class HomeScreen extends React.Component{ //------------------------------------
             dataSource={this.state.dataSource}
             renderRow={this.renderUser.bind(this)}
             style={styles.listView}
-            pageSize={10}
+            initialListSize={1}
+
           />
       </View>
     );
@@ -316,7 +317,6 @@ class HomeScreen extends React.Component{ //------------------------------------
 
 
   renderUser(userInfo) {
-    console.log("Abhishek", this);
     return (  
       <View style={styles.listElement}>
         <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) } underlayColor={'#dddddd'}>
@@ -342,16 +342,8 @@ class HomeScreen extends React.Component{ //------------------------------------
 
 class NotificationScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
-  oldRender() {
-    return (
-      <View>
-        
 
-          <Text style={styles.subTitle}>These are the requests that you have</Text>
-      </View>
-    );
-  }
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({
@@ -417,18 +409,23 @@ class NotificationScreen extends React.Component{ //----------------------------
     );
   }
 
-
+/*onPress={this.onAccept}*/
 
   renderUser(userInfo) {
     console.log("Abhishek", this);
     return (  
       <View style={styles.listElement}>
-{/*        <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) }>*/}
+        <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
+        <Text style={{fontSize: 16, color: '#888888',}}>{userInfo.description}</Text>
         <View>
-          <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
-          <Text style={{fontSize: 16, color: '#888888',}}>{userInfo.description}</Text>
+
+          <TouchableHighlight style={styles.twoButtons} underlayColor={'#0C862A'}>
+            <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>ACCEPT</Text></View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.twoButtons} underlayColor={'#0C862A'}>
+            <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>IGNORE</Text></View>
+          </TouchableHighlight>
         </View>
-{/*        </TouchableHighlight>*/}
       </View>
     );
   };
@@ -548,7 +545,7 @@ class FriendProfile extends React.Component{ //---------------------------------
       friendButton =  <View style={styles.inactiveBottomButton}>
                         <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>REQUEST SENT</Text></View>
                       </View>;
-    }
+    } 
     else {
       friendButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress} underlayColor={'#0C862A'}>
                         <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>ADD AS FRIEND</Text></View>
@@ -709,6 +706,13 @@ const styles = StyleSheet.create({ //-------------------------------------------
     marginRight: 20,
     marginTop: 10,
     marginBottom: 10,
+  },
+  twoButtons:{
+    backgroundColor: '#16C340',
+    borderRadius: 24,
+    width: 150,
+    height: 48,
+    marginTop: 20,
   },
 });
 
