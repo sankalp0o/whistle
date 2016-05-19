@@ -39,17 +39,18 @@ var options = {};
 
 
 //~~~~~~~~~~~~~~~API URLs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//var userApi = 'http://11.11.11.38:3000/api/users/';
-//var selfApi = 'http://11.11.11.38:3000/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
-//var userMappingApi = 'http://11.11.11.38:3000/api/userMappings/';
-//var selfReqApi = 'http://11.11.11.38:3000/api/userMappings/?filter[where][receiver]=';
-var notifApi = 'http://11.11.11.11:3000/api/userMappings/getNotification';
-console.log(userId);
+/*var userApi = 'http://11.11.11.21:3000/api/users/';
+var selfApi = 'http://11.11.11.21:3000/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
+var userMappingApi = 'http://11.11.11.21:3000/api/userMappings/';
+var selfReqApi = 'http://11.11.11.21:3000/api/userMappings/?filter[where][receiver]=';
+var notifApi = 'http://11.11.11.21:3000/api/userMappings/getNotification';
+*/
 
 var userApi = 'https://serene-basin-88933.herokuapp.com/api/users/';
 var selfApi = 'https://serene-basin-88933.herokuapp.com/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
 var userMappingApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/';
 var selfReqApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/?filter[where][receiver]=';
+var notifApi = 'http://serene-basin-88933.herokuapp.com/api/userMappings/getNotification';
 
 
 class whistle extends React.Component{ //-------------------------------------------------------------------------------
@@ -92,12 +93,10 @@ class SplashScreen extends React.Component{ //----------------------------------
     this.props.navigator.push({
         id: this.getStartRoute()
     })
-    console.log("userId in navFirst", userId);
 
   }
 
   getStartRoute() {
-    console.log("userId in getStartRoute", userId);
 
     if (!userId) {return 'welcome'}
     else {return 'home'}; //home
@@ -107,7 +106,6 @@ class SplashScreen extends React.Component{ //----------------------------------
     AsyncStorage.getItem("storedUserId")
       .then((value) => {
         userId = value;
-        console.log("User ID recieved", value);
         this.navFirst();
       })
       .catch((error) => {
@@ -169,9 +167,6 @@ class SignScreen extends React.Component{ //------------------------------------
     // call getValue() to get the values of the form
     var value = this.refs.form.getValue();
     if (value) { // if validation fails, value will be null
-      console.log(value); // value here is an instance of Person
-      console.log(value.full_name);
-
       this.setState({requestSent: true,}) //changes the button to inactive
 
       fetch(userApi, {
@@ -190,7 +185,6 @@ class SignScreen extends React.Component{ //------------------------------------
       })
       .then((response) =>  response.json())
       .then((jsonData) => {
-        console.log(jsonData.id);
         AsyncStorage.setItem('storedUserId', jsonData.id); //sets userID in AsyncStorage
         userId = jsonData.id; // sets the current userId for use in rest of the pages
       })
@@ -353,6 +347,7 @@ class NotificationScreen extends React.Component{ //----------------------------
     };
   }
 
+
   componentDidMount() {
     this.fetchData();
   }
@@ -366,7 +361,6 @@ class NotificationScreen extends React.Component{ //----------------------------
     })
     .then((response) => response.json())
     .then((value) => {
-      console.log("value", value);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(value.data),
         loaded: true,
@@ -379,10 +373,7 @@ class NotificationScreen extends React.Component{ //----------------------------
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
-    console.log("Inside render method", this);
-
     return (
-
       <View style={{ flex:1,}}>
         <ToolbarAndroid style={styles.tb}
                         title={this.props.title}
@@ -390,11 +381,11 @@ class NotificationScreen extends React.Component{ //----------------------------
                         navIcon={require('./back.png')}
                         onIconClicked={this.props.navigator.pop}/>
         <Text style={styles.subTitle}>Requests</Text>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this.renderUser.bind(this)}
-            style={styles.listView}
-          />
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderUser.bind(this)}
+          style={styles.listView}
+        />
       </View>
     );
   }
@@ -409,20 +400,17 @@ class NotificationScreen extends React.Component{ //----------------------------
     );
   }
 
-/*onPress={this.onAccept}*/
 
   renderUser(userInfo) {
-    console.log("Abhishek", this);
     return (  
       <View style={styles.listElement}>
         <Text style={{fontSize: 20, color: 'black', marginTop: 12,}}>{userInfo.name}</Text>
         <Text style={{fontSize: 16, color: '#888888',}}>{userInfo.description}</Text>
         <View>
-
-          <TouchableHighlight style={styles.twoButtons} underlayColor={'#0C862A'}>
+          <TouchableHighlight style={styles.twoButtons} onPress={ () => { this._onPress('accepted', userInfo.userMappingId) } } underlayColor={'#0C862A'}>
             <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>ACCEPT</Text></View>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.twoButtons} underlayColor={'#0C862A'}>
+          <TouchableHighlight style={styles.twoButtons} onPress={ () => { this._onPress('rejected', userInfo.userMappingId) } } underlayColor={'#0C862A'}>
             <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}><Text style={styles.buttonText, { color: 'white', }}>IGNORE</Text></View>
           </TouchableHighlight>
         </View>
@@ -437,8 +425,30 @@ class NotificationScreen extends React.Component{ //----------------------------
     })
 
   }
-};
 
+  _onPress(status, requestId) {
+   var that = this;
+    var value = {
+      "status": status //status
+    };
+
+    fetch(userMappingApi+requestId, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(value)
+    })
+      .then(() => {
+        this.fetchData()
+      })
+      .catch((error) => {
+        console.warn(error);   
+      });
+  };
+
+}
 
 class AccountScreen extends React.Component{ //-----------------------------------------------------------------------------------
 
@@ -472,7 +482,6 @@ class AccountScreen extends React.Component{ //---------------------------------
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
-    console.log("Inside render method", this);
 
     return (
       <View>
@@ -538,8 +547,6 @@ class FriendProfile extends React.Component{ //---------------------------------
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
-
-    console.log("Inside render method", this);
 
     if (this.state.requestSent) {
       friendButton =  <View style={styles.inactiveBottomButton}>
