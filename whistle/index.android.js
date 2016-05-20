@@ -852,10 +852,18 @@ class FriendProfile extends React.Component{ //---------------------------------
             body: JSON.stringify(value)
         })
         .then(() => {
-            this.setState({
-                buttonType: 'hidden',
-                showPrivate: false,
-            })
+            if (status ==='accepted') {
+                this.setState({
+                    buttonType: 'hidden',
+                    showPrivate: true,
+                })
+            }
+            else {
+                this.setState({
+                    buttonType: 'hidden',
+                    showPrivate: false,
+                })
+            }
         })
         /*.then(() => {
             this.fetchData()
