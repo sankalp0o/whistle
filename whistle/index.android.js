@@ -12,6 +12,7 @@ import React, {
     TextInput,
     AsyncStorage,
     ScrollView,
+    RefreshControl,
 } from 'react-native';
 
 
@@ -298,8 +299,11 @@ class HomeScreen extends React.Component{ //------------------------------------
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
+
             }),
             loaded: false,
+            isRefreshing: false,
+
         };
     }
 
@@ -342,6 +346,17 @@ class HomeScreen extends React.Component{ //------------------------------------
                 />
                 <Text style={styles.subTitle}>PARTICIPANTS</Text>
                 <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                            tintColor="#ff0000"
+                            title="Loading..."
+                            titleColor="#00ff00"
+                            colors={['#ffffff', '#ffffff', '#ffffff']}
+                            progressBackgroundColor="#16C340"
+                        />
+                    } 
                     dataSource={this.state.dataSource}
                     renderRow={this.renderUser.bind(this)}
                     style={styles.listView}
@@ -350,6 +365,20 @@ class HomeScreen extends React.Component{ //------------------------------------
             </View>
         );
     }
+
+
+
+    _onRefresh() {
+        this.setState({isRefreshing: true});
+        
+        this.fetchData();
+
+        this.setState({
+            isRefreshing: false,
+        });
+
+    }
+
 
 
     renderLoadingView() {
@@ -712,6 +741,7 @@ class FriendProfile extends React.Component{ //---------------------------------
                                 <TouchableHighlight 
                                     style={styles.twoButtons} 
                                     underlayColor={'#0C862A'}
+                                    onPress={() => { this.onAcceptRejectPress('accepted', this.props.friend.userMappingId)} }
                                 >
                                     <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
                                         <Text style={styles.buttonText, { color: 'white', }}>ACCEPT</Text>
@@ -720,6 +750,8 @@ class FriendProfile extends React.Component{ //---------------------------------
                                 <TouchableHighlight 
                                     style={styles.twoButtons} 
                                     underlayColor={'#0C862A'}
+                                    onPress={() => {this.onAcceptRejectPress('rejected', this.props.friend.userMappingId)} }
+
                                 >
                                     <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
                                         <Text style={styles.buttonText, { color: 'white', }}>IGNORE</Text>
@@ -799,6 +831,35 @@ class FriendProfile extends React.Component{ //---------------------------------
                 showPrivate: false,
             })
         })
+        .catch((error) => {
+            console.warn(error);   
+        });
+    };
+
+
+    onAcceptRejectPress(status, requestId) {
+        console.log("inside acceptrejectpress,", status, requestId);
+        var value = {
+            "status": status //status
+        };
+
+        fetch(userMappingApi+this.props.friend.userMappingId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(value)
+        })
+        .then(() => {
+            this.setState({
+                buttonType: 'hidden',
+                showPrivate: false,
+            })
+        })
+        /*.then(() => {
+            this.fetchData()
+        })*/
         .catch((error) => {
             console.warn(error);   
         });
