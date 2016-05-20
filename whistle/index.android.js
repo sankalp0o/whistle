@@ -56,9 +56,8 @@ var userApi = 'https://serene-basin-88933.herokuapp.com/api/users/';
 var selfApi = 'https://serene-basin-88933.herokuapp.com/api/users/?filter[where][id]='; // followed by something like 5730171169a2d621a5b2b88a
 var userMappingApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/';
 var selfReqApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/?filter[where][receiver]=';
-var notifApi = 'http://serene-basin-88933.herokuapp.com/api/userMappings/getNotification';
-
-
+var notifApi = 'https://serene-basin-88933.herokuapp.com/api/userMappings/getNotification';
+var userListApi = 'https://serene-basin-88933.herokuapp.com/api/users/getList';
 
 
 
@@ -92,7 +91,7 @@ class whistle extends React.Component{ //---------------------------------------
           case 'account':
             return (<AccountScreen navigator={navigator} title="Your profile" />);
           case 'profile':
-            return (<FriendProfile navigator={navigator} title="Friend" friendId={route.friendId} />);
+            return (<FriendProfile navigator={navigator} title="Friend" friend={route.friend} />);
           case 'modal':
             return (<ConfirmModal navigator={navigator} title="The modal" />);
         }
@@ -311,11 +310,16 @@ class HomeScreen extends React.Component{ //------------------------------------
 
 
     fetchData() {
-        fetch(userApi)
+        fetch(userListApi, {
+            method: 'GET',
+            headers: {
+                'userId': userId,
+            },
+        })
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(responseData),
+                dataSource: this.state.dataSource.cloneWithRows(responseData.data),
                 loaded: true,
             });
         })
@@ -362,7 +366,7 @@ class HomeScreen extends React.Component{ //------------------------------------
     renderUser(userInfo) {
         return (  
             <View style={styles.listElement}>
-                <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo.id) } underlayColor={'#dddddd'}>
+                <TouchableHighlight style={{height: 70,}} onPress={ () => this.seeFriend(userInfo) } underlayColor={'#dddddd'}>
                     <View>
                         <Text style={{fontSize: 20, color: 'black', marginTop: 12, marginLeft:20,}}>{userInfo.name}</Text>
                         <Text style={{fontSize: 16, color: '#888888', marginLeft:20,}}>{userInfo.description}</Text>
@@ -373,10 +377,11 @@ class HomeScreen extends React.Component{ //------------------------------------
     }
 
 
-    seeFriend(id) {
+    seeFriend(friendinfo) {
+        console.log(friendinfo);
         this.props.navigator.push({
             id: 'profile',
-            friendId: id,
+            friend: friendinfo
         })
     }
 
@@ -613,19 +618,64 @@ class FriendProfile extends React.Component{ //---------------------------------
             friendInfo: {
                 name: "loading",
             },
-            loaded: false,
-            requestSent:false,
+//            loaded: true,
+//            requestSent:false,
+            buttonType: "hidden",
+            showPrivate: false
         };
     }
 
 
     componentDidMount() {
-        this.fetchData();
+//        this.fetchData();
+        if (this.props.friend.status==='initiated') {
+            if (!this.props.friend.sender) {
+                this.setState({
+                    buttonType: 'inactive',
+                    showPrivate: false,
+                });
+            }
+            else {
+                this.setState({
+                    buttonType: 'acceptReject',
+                    showPrivate: false,
+                });
+            }
+        }
+
+        else if (this.props.friend.status==='accepted') {
+            this.setState({
+                    buttonType: 'hidden',
+                    showPrivate: true,
+            });
+        }
+
+        else if (this.props.friend.status==='rejected') {
+            if (!this.props.friend.sender) {
+                this.setState({
+                    buttonType: 'inactive',
+                    showPrivate: false,
+                });
+            }
+            else {
+                this.setState({
+                    buttonType: 'hidden',
+                    showPrivate: false,
+                });
+            }
+        }
+
+        else {
+            this.setState({
+                buttonType: 'active',
+                showPrivate: false,
+            });
+        }
     }
 
 
     fetchData() {
-        fetch(userApi+this.props.friendId)
+        fetch(userApi+this.props.friend.id)
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
@@ -638,23 +688,75 @@ class FriendProfile extends React.Component{ //---------------------------------
 
 
     render() {
-        if (!this.state.loaded) {
+/*        if (!this.state.loaded) {
             return this.renderLoadingView();
-        }
-        if (this.state.requestSent) {
+        }*/
+
+
+        if (this.state.buttonType==='inactive') {
             friendButton =  <View style={styles.inactiveBottomButton}>
                                 <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
                                     <Text style={styles.buttonText, { color: 'white', }}>REQUEST SENT</Text>
                                 </View>
                             </View>;
         } 
-        else {
+        else if (this.state.buttonType==='active') {
             friendButton =  <TouchableHighlight style={styles.bottomButton} onPress={this.onPress} underlayColor={'#0C862A'}>
                                 <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
                                     <Text style={styles.buttonText, { color: 'white', }}>ADD AS FRIEND</Text>
                                 </View>
                             </TouchableHighlight>;
         }
+        else if (this.state.buttonType==='acceptReject') {
+            friendButton =  <View>
+                                <TouchableHighlight 
+                                    style={styles.twoButtons} 
+                                    underlayColor={'#0C862A'}
+                                >
+                                    <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
+                                        <Text style={styles.buttonText, { color: 'white', }}>ACCEPT</Text>
+                                    </View>
+                                </TouchableHighlight>
+                                <TouchableHighlight 
+                                    style={styles.twoButtons} 
+                                    underlayColor={'#0C862A'}
+                                >
+                                    <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
+                                        <Text style={styles.buttonText, { color: 'white', }}>IGNORE</Text>
+                                    </View>
+                                </TouchableHighlight>
+                            </View>;
+
+
+                            /*
+                            <TouchableHighlight style={styles.bottomButton} onPress={this.onPress} underlayColor={'#0C862A'}>
+                                <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
+                                    <Text style={styles.buttonText, { color: 'white', }}>ADD AS FRIEND</Text>
+                                </View>
+                            </TouchableHighlight>;
+                            */ //change this to code from notifiationsScreen
+        }
+        else if (this.state.buttonType==='hidden') {
+            friendButton =  <View>
+                            </View>;
+        }
+
+
+        if (this.state.showPrivate) {
+            privateInfo = 
+                <View>
+                    <Text style={styles.subheading}>EMAIL</Text>
+                    <Text style={styles.bodyText}>{this.props.friend.emailId}</Text>
+                    <Text style={styles.subheading}>PHONE NO.</Text>
+                    <Text style={styles.bodyText}>{this.props.friend.phoneNumber}</Text>
+                </View>;
+        }
+        else {
+            privateInfo = 
+                <View>
+                </View>;
+        }
+
         return (
             <View>
                 <ToolbarAndroid 
@@ -665,13 +767,10 @@ class FriendProfile extends React.Component{ //---------------------------------
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subheading}>NAME</Text>
-                <Text style={styles.bodyText}>{this.state.friendInfo.name}</Text>
-                <Text style={styles.subheading}>EMAIL</Text>
-                <Text style={styles.bodyText}>{this.state.friendInfo.emailId}</Text>
-                <Text style={styles.subheading}>PHONE NO.</Text>
-                <Text style={styles.bodyText}>{this.state.friendInfo.phoneNumber}</Text>
+                <Text style={styles.bodyText}>{this.props.friend.name}</Text>
                 <Text style={styles.subheading}>SHORT BIO</Text>
-                <Text style={styles.bodyText}>{this.state.friendInfo.description}</Text>
+                <Text style={styles.bodyText}>{this.props.friend.description}</Text>
+                {privateInfo}
                 {friendButton}
         
             </View>
@@ -682,7 +781,7 @@ class FriendProfile extends React.Component{ //---------------------------------
     onPress = () => {
         var value = {
             "sender": userId, //will need to change this !!! - - -   - -  
-            "receiver": this.state.friendInfo.id,
+            "receiver": this.props.friend.id,
             "status": "initiated"
         };
         fetch(userMappingApi, {
@@ -695,13 +794,16 @@ class FriendProfile extends React.Component{ //---------------------------------
         })
         .then((response) =>  response.json())
         .then((jsonData) => {
-            this.setState({requestSent: true,})
+            this.setState({
+                buttonType: 'inactive',
+                showPrivate: false,
+            })
         })
         .catch((error) => {
             console.warn(error);   
         });
-    }
-    
+    };
+
 
     renderLoadingView() {
         return (
