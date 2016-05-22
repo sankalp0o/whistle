@@ -64,7 +64,7 @@ var userListApi = 'https://serene-basin-88933.herokuapp.com/api/users/getList';
 
 
 
-class whistle extends React.Component{ //-------------------------------------------------------------------------------
+class whistlehillhacks extends React.Component{ //-------------------------------------------------------------------------------
 
 
     render() {
@@ -407,7 +407,6 @@ class HomeScreen extends React.Component{ //------------------------------------
 
 
     seeFriend(friendinfo) {
-        console.log(friendinfo);
         this.props.navigator.push({
             id: 'profile',
             friend: friendinfo
@@ -838,7 +837,6 @@ class FriendProfile extends React.Component{ //---------------------------------
 
 
     onAcceptRejectPress(status, requestId) {
-        console.log("inside acceptrejectpress,", status, requestId);
         var value = {
             "status": status //status
         };
@@ -1004,4 +1002,4 @@ const styles = StyleSheet.create({ //-------------------------------------------
 });
 
 
-AppRegistry.registerComponent('whistle', () => whistle);
+AppRegistry.registerComponent('whistlehillhacks', () => whistlehillhacks);
