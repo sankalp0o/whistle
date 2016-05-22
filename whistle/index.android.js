@@ -22,6 +22,7 @@ import React, {
 //~~~~~~~~~~~~~~~~~Local Storage~~~~~~~~~~~~~~~~~~~~
 var userId; //used to store userid in shared preference
 var store = require('react-native-simple-store');
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 
@@ -40,7 +41,29 @@ var Person = t.struct({
     skills: t.String,
 //  rememberMe: t.Boolean        // a boolean
 });
-var options = {};
+var options = {
+  fields: {
+    full_name: {
+        error: 'Please enter a name',
+        enablesReturnKeyAutomatically: true
+
+    },
+    email: {
+        error: 'Insert a valid email',
+        keyboardType: 'email-address'
+    },
+    ten_digit_phone_number: {
+        error: 'Insert a valid mobile number',
+        keyboardType: 'numeric'
+    },
+    short_bio: {
+        error: 'Required'
+    },
+    skills: {
+        error: 'Required'
+    }
+  }
+};
 
 
 
@@ -118,7 +141,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 
     getStartRoute() {
         if (!userId) {return 'welcome'}
-        else {return 'home'}; //home
+        else {return 'welcome'}; //home
     }
 
 
@@ -252,20 +275,22 @@ class SignScreen extends React.Component{ //------------------------------------
         }
         return (
             <View>
-                <ToolbarAndroid 
-                    style={styles.tb}
-                    title={this.props.title}
-                    titleColor={'#FFFFFF'}
-                />
-                <View style={{margin: 20}}>
-                    <Form
-                        ref="form"
-                        type={Person}
-                        options={options}
+                <View>
+                    <ToolbarAndroid 
+                        style={styles.tb}
+                        title={this.props.title}
+                        titleColor={'#FFFFFF'}
                     />
-                </View> 
-                {submitButton}
-        
+                    <View style={{margin: 20}}>
+                        <Form
+                            ref="form"
+                            type={Person}
+                            options={options}
+                        />
+                    </View> 
+                    {submitButton}
+                    <View style={{height: 300,}}></View>
+                </View>
             </View>
         );
     }
