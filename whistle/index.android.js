@@ -13,6 +13,7 @@ import React, {
     AsyncStorage,
     ScrollView,
     RefreshControl,
+    ToastAndroid,
 } from 'react-native';
 
 
@@ -23,6 +24,7 @@ import React, {
 var userId; //used to store userid in shared preference
 var store = require('react-native-simple-store');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+var Contacts = require('react-native-contacts');
 
 
 
@@ -109,7 +111,7 @@ class whistlehillhacks extends React.Component{ //------------------------------
           case 'signUp':
             return (<SignScreen navigator={navigator} title="Fill the form" />);
           case 'home':
-            return (<HomeScreen navigator={navigator} title="CODECAMP16" />);
+            return (<HomeScreen navigator={navigator} title="Whistle" />);
           case 'notification':
             return (<NotificationScreen navigator={navigator} title="Friend Requests"/>);
           case 'account':
@@ -141,7 +143,7 @@ class SplashScreen extends React.Component{ //----------------------------------
 
     getStartRoute() {
         if (!userId) {return 'welcome'}
-        else {return 'welcome'}; //home
+        else {return 'home'}; //home
     }
 
 
@@ -188,8 +190,8 @@ class WelcomeScreen extends React.Component{ //---------------------------------
     render() {
         return (
             <View style={styles.welcomeScreen}>
-                <Text style={{color: 'white', marginTop: 180, fontSize: 30,}}>CODECAMP16</Text>
-                <Text>Gumakkad</Text>
+                <Text style={{color: 'white', marginTop: 180, fontSize: 30,}}>Whistle</Text>
+                <Text>Hillhacks 2016</Text>
                 <TouchableHighlight style={styles.welcomeButton} onPress={this.navSecond.bind(this)} underlayColor={'#dddddd'}>
                     <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
                         <Text style={styles.buttonText}>GET INTRODUCED</Text>
@@ -369,7 +371,7 @@ class HomeScreen extends React.Component{ //------------------------------------
                     actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
                     onActionSelected={this.onActionSelected.bind(this)}
                 />
-                <Text style={styles.subTitle}>PARTICIPANTS</Text>
+                <Text style={styles.subTitle}>HILLHACKS PARTICIPANTS</Text>
                 <ListView
                     refreshControl={
                         <RefreshControl
@@ -805,6 +807,11 @@ class FriendProfile extends React.Component{ //---------------------------------
                     <Text style={styles.bodyText}>{this.props.friend.emailId}</Text>
                     <Text style={styles.subheading}>PHONE NO.</Text>
                     <Text style={styles.bodyText}>{this.props.friend.phoneNumber}</Text>
+                    <TouchableHighlight onPress={this.addContact} style={styles.bottomButton}>
+                        <View style={{flexDirection: 'row', height: 48, alignItems: 'center', justifyContent: 'center',}}>
+                            <Text style={styles.buttonText, { color: 'white', }}>SAVE TO PHONEBOOK</Text>
+                        </View>
+                    </TouchableHighlight>
                 </View>;
         }
         else {
@@ -895,6 +902,24 @@ class FriendProfile extends React.Component{ //---------------------------------
             console.warn(error);   
         });
     };
+
+
+    addContact = () => {
+        var newPerson = {
+            familyName: '',
+            givenName: this.props.friend.name,
+            emailAddresses: [{
+                label: "work",
+                email: this.props.friend.emailId,
+            }],
+            phoneNumbers: [{
+                label: "mobile",
+                number: this.props.friend.phoneNumber,
+            }],
+        }
+        Contacts.addContact(newPerson, (err) => { /*...*/ })
+        ToastAndroid.show(this.props.friend.name+' saved to your phonebook', ToastAndroid.LONG)
+    }
 
 
     renderLoadingView() {
