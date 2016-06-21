@@ -1,0 +1,3 @@
+rootProject.name = 'whistlecontactmanager'
+
+include ':app'

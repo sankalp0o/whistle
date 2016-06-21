@@ -1,31 +1,14 @@
 {
-  "name": "whistlehillhacks",
-  "version": "1.0.1",
-  "description": "",
-  "main": "webpack.config.js",
+  "name": "whistlecontactmanager",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://sankalp0o@github.com/sankalp0o/whistle.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sankalp0o/whistle/issues"
-  },
-  "homepage": "https://github.com/sankalp0o/whistle#readme",
-  "devDependencies": {
-    "babel-core": "^6.7.6",
-    "babel-loader": "^6.2.4",
-    "babel-preset-react": "^6.5.0",
-    "html-webpack-plugin": "^2.15.0",
-    "webpack": "^1.12.15",
-    "webpack-dev-server": "^1.14.1"
+    "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "react": "^15.1.0",
+    "react-native": "^0.27.2",
+    "react-native-contacts": "^0.2.6",
+    "tcomb-form-native": "^0.5.1"
   }
 }

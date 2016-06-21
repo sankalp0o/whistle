@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/usr/local/opt/android-sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.1-a041f2f8ff1493800bffcf8f765c2b6816fd397f.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-4575d9b6de7acb7b255ba1203654ed79a68379a7.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-53f481428be64b23d260414c001e490c332e24fe.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-42a69353ee0b5c8491f46ad5757d14a9d07fd1a6.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.2.0/f7873a2ebde246a45c2a8d6f3247108b4c88a879/okhttp-3.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f7873a2ebde246a45c2a8d6f3247108b4c88a879">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/okhttp-3.2.0-5b67e3dc010932ff6c7bbcfa58de22643093370a.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.27.2/jars/libs/infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cbdbf93189a97ea1b78ce66efdf5c2e225833b3c">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-26ee33860831a3176de02ca04b0ad4747acdbeff.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="857099e23430445aeb65cf703d5adf646ff280f1">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-d1e34d5b3e734ddbba55be25cd631733ccfcb1d5.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d323cf4983bdfce7136a1ce5e32710e1b36b20fe">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-41a6d963ba0cfcca7371af8da9aa8144bd672e16.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5e88a2a26ac71cd7f8fd8bd9f9381fa06d1a47a3">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-63a2f3aeb74149d7c75b1abb72f831ac9f96dda0.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-a7540af463da41dd17ce78fcdceef0d2108cb648.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-6a5a5babe93c20112cdb22036ecb400e8c6726d0.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.8.0/5ea7af56cc7c567ed9856d99efb30740e9b17ff/okio-1.8.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/okio-1.8.0-114cfdfbd9afea83ef873148762baba071605da2.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5e88a2a26ac71cd7f8fd8bd9f9381fa06d1a47a3">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-2d6c4aaee5a04ddce7dcee1a82ab6119a40b3819.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="65f0c887ee1f57cd0ea65b228e39b7f35372b798">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-75a049e405bfd9d8c8fa8c9e61800c0f51bf46a1.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d323cf4983bdfce7136a1ce5e32710e1b36b20fe">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-11520609188d9a314c1d5eff42c335cd50c6e731.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.27.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="36e26cb6307d65fd1480e7556ec071da88280722">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-5ca494b6e15e86d0ac7015a842f85a51f3b7294d.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.2.0/6f8a4b1435c9e0a6f9c5fe4a1be46627b848fd0c/okhttp-urlconnection-3.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6f8a4b1435c9e0a6f9c5fe4a1be46627b848fd0c">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.2.0-ae12898082b590c9db8c261ce79e3764ea8f7e70.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-0f23ade856371741070331f3fbf3e8a5ade4ed41.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-9f514623ff74b5421ae30948dbc7b95dfab991c5.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="53880c6e24bb574c2f03fd0f743a268ccc502f45">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-fd00c1753e0fc31ca07c8d5d6a53c9dfe23258a4.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-14350715870e75730fefb489651feb05e2ede6f3.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-354d03fb68ba63181b0ee3c0596dbba52f9379c9.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-aa24e8a721d1533ccdeb5ca1622c1480ea9f1bc1.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-ws/3.2.0/1ea229d6984444c8c58b8e97ba4c8429d9d135b3/okhttp-ws-3.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1ea229d6984444c8c58b8e97ba4c8429d9d135b3">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/okhttp-ws-3.2.0-f140267a447fa32704ccf637bd4de86c147c6c3d.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="65f0c887ee1f57cd0ea65b228e39b7f35372b798">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-dffa6d90c7abb02135fba1e88d521ab730a354ba.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-b621f78105b20af3e5ec61a2ae5495f9812b0c0c.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.27.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="36e26cb6307d65fd1480e7556ec071da88280722">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-3badac7bc88af0373fe0affca180bcf35d42dd66.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-4f3e53b86c24c3eff5d839f81156c9c6c4e6bb30.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6e1ed00013584399dbe27d45ac1fd6a9828c9fca">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-e2ed883ada1f49f77dde01ead0ed57a85c7505e2.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="857099e23430445aeb65cf703d5adf646ff280f1">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-efd4901377c81f24741d0c3164ff494715214b29.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6e1ed00013584399dbe27d45ac1fd6a9828c9fca">
+        <dex dex="/Users/sankalp/whistlecontactmanager/android/app/build/intermediates/pre-dexed/debug/classes-7624884331e4c9dbeb21a0af0d8f9d545aae0a74.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.10.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="53880c6e24bb574c2f03fd0f743a268ccc502f45">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/classes-1750bcd9100de054ad2b05e3858b6580e445a190.jar" />
+    </item>
+    <item
+        jar="/Users/sankalp/whistle/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.27.2/jars/libs/infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cbdbf93189a97ea1b78ce66efdf5c2e225833b3c">
+        <dex dex="/Users/sankalp/whistle/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-64b90b70966d118cf8e8db8346419c9a9a36c69a.jar" />
+    </item>
+
+</items>
