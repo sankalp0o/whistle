@@ -369,7 +369,7 @@ class HomeScreen extends React.Component{ //------------------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    actions={[{title: 'Notifications', icon: require('./notif.png'), show: 'always'},{title: 'Account', icon: require('./account.png'), show: 'always'}]}
+                    actions={[{title: 'Notifications', icon: require('./resources/icons/notif.png'), show: 'always'},{title: 'Account', icon: require('./resources/icons/account.png'), show: 'always'}]}
                     onActionSelected={this.onActionSelected.bind(this)}
                 />
                 <Text style={styles.subTitle}>HILLHACKS PARTICIPANTS</Text>
@@ -510,7 +510,7 @@ class NotificationScreen extends React.Component{ //----------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    navIcon={require('./back.png')}
+                    navIcon={require('./resources/icons/back.png')}
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subTitle}>Requests</Text>
@@ -541,7 +541,7 @@ class NotificationScreen extends React.Component{ //----------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    navIcon={require('./back.png')}
+                    navIcon={require('./resources/icons/back.png')}
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subTitle}>NO REQUESTS</Text>
@@ -659,7 +659,7 @@ class AccountScreen extends React.Component{ //---------------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    navIcon={require('./back.png')}
+                    navIcon={require('./resources/icons/back.png')}
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subheading}>NAME</Text>
@@ -855,7 +855,7 @@ class FriendProfile extends React.Component{ //---------------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    navIcon={require('./back.png')}
+                    navIcon={require('./resources/icons/back.png')}
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subheading}>NAME</Text>
@@ -979,7 +979,7 @@ class ConfirmModal extends React.Component{ //----------------------------------
                     style={styles.tb}
                     title={this.props.title}
                     titleColor={'#FFFFFF'}
-                    navIcon={require('./notif.png')}
+                    navIcon={require('./resources/icons/notif.png')}
                     onIconClicked={this.props.navigator.pop}
                 />
                 <Text style={styles.subTitle}>Welcome to codecamp</Text>
